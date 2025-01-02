@@ -6,7 +6,17 @@ interface GetProductsOptions {
 
 
 export const getProducts = async ({ filterKey }: GetProductsOptions) => {
-  const { data } = await productoApi.get<Product[]>(`/products`)
+  // const params = new URLSearchParams()
+
+  // if (filterKey) {
+  //   params.append('category', filterKey)
+  // }
+
+  const { data } = await productoApi.get<Product[]>(`/products`, {
+    params: {
+      category: filterKey
+    }
+  })
 
   return data
 }
