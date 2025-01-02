@@ -1,12 +1,18 @@
 import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import { type Product } from "../interfaces/product";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { productActions } from "..";
 
 interface FormInupts extends Omit<Product, 'rating' | 'id'> {
 
 }
 
 export const NewProduct = () => {
+
+  const productMutation = useMutation({
+    mutationFn: productActions.createProduct
+  })
 
   const { control, handleSubmit, watch } = useForm<FormInupts>({
     defaultValues: {
@@ -22,6 +28,7 @@ export const NewProduct = () => {
 
   const onSubmit: SubmitHandler<FormInupts> = (data) => {
     console.log(data);
+    productMutation.mutate(data)
   }
 
   return (
@@ -69,7 +76,6 @@ export const NewProduct = () => {
               )}
             />
 
-
             <Controller
               control={control}
               name="category"
@@ -84,9 +90,14 @@ export const NewProduct = () => {
               )}
             />
 
-
             <br />
-            <Button type="submit" className="mt-2" color="primary">Crear</Button>
+            <Button type="submit" className="mt-2" color="primary" isDisabled={productMutation.isPending}>
+              {
+                productMutation.isPending
+                  ? 'Crear'
+                  : 'Crear producto'
+              }
+            </Button>
           </div>
 
           <div className="bg-white rounded-2xl p-10 flex items-center" style={{

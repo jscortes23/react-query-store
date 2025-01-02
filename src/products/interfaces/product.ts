@@ -1,3 +1,7 @@
+export interface ProductDTO extends Omit<Product, 'id'> {
+  id?: number;
+}
+
 export interface Product {
   id: number;
   title: string;

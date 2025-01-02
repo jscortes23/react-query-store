@@ -1,4 +1,5 @@
 import { type Product, productoApi } from ".."
+import { type ProductDTO } from "../interfaces/product"
 
 interface GetProductsOptions {
   filterKey?: string
@@ -28,6 +29,12 @@ export const getProductById = async ({ id }: { id: number }): Promise<Product> =
       id: id
     }
   })
+
+  return data
+}
+
+export const createProduct = async (product: ProductDTO) => {
+  const { data } = await productoApi.post<Product>('products', product)
 
   return data
 }
