@@ -1,18 +1,13 @@
 import { Button, Image, Input, Textarea } from "@nextui-org/react";
 import { type Product } from "../interfaces/product";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { productActions } from "..";
+import { useProductMutation } from "../hooks/useProductMutation";
 
 interface FormInupts extends Omit<Product, 'rating' | 'id'> {
 
 }
 
 export const NewProduct = () => {
-
-  const productMutation = useMutation({
-    mutationFn: productActions.createProduct
-  })
 
   const { control, handleSubmit, watch } = useForm<FormInupts>({
     defaultValues: {
@@ -24,13 +19,14 @@ export const NewProduct = () => {
     }
   })
 
+  const productMutation = useProductMutation()
+
   const newIamge = watch('image')
 
   const onSubmit: SubmitHandler<FormInupts> = (data) => {
     console.log(data);
     productMutation.mutate(data)
   }
-
   return (
     <div className="w-full flex-col">
       <h1 className="text-2xl font-bold">Nuevo producto</h1>
