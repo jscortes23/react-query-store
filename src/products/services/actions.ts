@@ -5,7 +5,7 @@ interface GetProductsOptions {
 }
 
 
-export const getProducts = async ({ filterKey }: GetProductsOptions) => {
+export const getProducts = async ({ filterKey }: GetProductsOptions): Promise<Product[]> => {
   // const params = new URLSearchParams()
 
   // if (filterKey) {
@@ -15,6 +15,17 @@ export const getProducts = async ({ filterKey }: GetProductsOptions) => {
   const { data } = await productoApi.get<Product[]>(`/products`, {
     params: {
       category: filterKey
+    }
+  })
+
+  return data
+}
+
+export const getProductById = async ({ id }: { id: number }): Promise<Product> => {
+
+  const { data } = await productoApi.get<Product>('/products', {
+    params: {
+      id: id
     }
   })
 
